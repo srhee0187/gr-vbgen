@@ -47,12 +47,14 @@ namespace gr {
               gr::io_signature::make(1, 1, sizeof(gr_complex))),
 			  o_rng(0, 0, nBins),
 			  f_phase(0),
+			  f_pts(0),
 			  d_fw(fWidth),
 			  d_pw(pWidth),
 			  d_fs(samp_rate),
 			  i_n(nBins),
 			  d_bw(cov),
 			  d_sc(scWidth),
+			  f_spts(0),
 			  ii_sc(0),
 			  ii_pw(0)
     {}
@@ -79,33 +81,50 @@ namespace gr {
 	  const long int sps = int(d_fs / d_sc);
 	  const long int hsps = int(sps / 2);
 	  const float slp = 2.0f * d_bw / sps / d_fs;
-	  // working/intermediate variables
-	  float pts, oi, oq;
-	  float spts = 0;
+	  // initialize working/intermediate variables
+	  float oi, oq;
 	  int32_t angle;
 	  for (int pti = 0; pti < noutput_items; pti++) {
-		  // select random point and then scale RNG output into sample frequency
-		  pts = (o_rng.ran_int() - offc) * sens;
-		  // repeat sample spp times into a pulse, and perform frequency modulation simultaneously
-		  for (int j = 0; j < spp; j++) {
-			  // cumulative sum on slope index (sc) and mod w.r.t. sps
-			  ii_sc += 1;
-			  ii_sc = ii_sc % sps; // replace sub counter
-			  // cumulative sum on phase (sc)
-			  spts += slp * (ii_sc - hsps);
-			  // cumulative sum on phase (rpm)
-			  f_phase += pts;
-			  // compute sin and cos of angle (fixed value)
-			  angle = gr::fxpt::float_to_fixed((f_phase + spts) * 3.14159f);
-			  gr::fxpt::sincos(angle, &oq, & oi);
-			  // assign complex modulated value to "out" array
-			  *out = gr_complex(oi, oq);
-			  // increment pointer
-			  out += 1;
+		  // rpm loop
+		  // cumulative sum on phase (rpm)
+		  f_phase += f_pts;
+		  // rpm vars (undef for ii_pw < 0)
+		  if (ii_pw > spp) {
+			  // select random point and then scale
+			  // RNG output into sample frequency
+			  f_pts = (o_rng.ran_int() - offc) * sens;
+			  // reset ii_pw counter
+			  ii_pw = 0;
+		  } else {
+			  // increment counter
+			  ii_pw += 1;
 		  }
+
+		  // sc loop
+		  // cumulative sum on phase (sc)
+		  f_spts += slp * (ii_sc - hsps);
+		  // re/set sc counter
+		  if (ii_sc > sps) {
+			  ii_sc = 0;
+		  } else {
+			  // increment sub counter
+			  ii_sc += 1;
+		  }
+		  
+		  // generate iq via phase modulation
+		  // compute sin and cos of angle (fixed value)
+		  angle = gr::fxpt::float_to_fixed((f_phase + f_spts) * 3.14159f);
+		  gr::fxpt::sincos(angle, &oq, & oi);
+		  // assign complex modulated value to "out" array
+		  *out = gr_complex(oi, oq);
+		  // increment pointer
+		  out += 1;
+
 		  // then mod phase sum to 2*PI [-PI, PI] to avoid (eventual) overruns
-		  f_phase = std::fmod(f_phase + 1.0f, 2.0f) - 1.0f;
-		  spts = std::fmod(spts + 1.0f, 2.0f) - 1.0f;
+		  if ((f_phase + f_spts) > 280) {
+			  f_phase = std::fmod(f_phase + 1.0f, 2.0f) - 1.0f;
+			  f_spts = std::fmod(f_spts + 1.0f, 2.0f) - 1.0f;
+		  }
 	  }
       // Tell runtime system how many output items we produced.
       return noutput_items;

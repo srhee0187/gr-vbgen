@@ -32,12 +32,14 @@ namespace gr {
      private:
       gr::random o_rng;
       float f_phase;
+      float f_pts;
       double d_fw;
       double d_pw;
       double d_fs;
       int i_n;
 			double d_bw;
 			double d_sc;
+      float f_spts;
 			long int ii_sc;
       long int ii_pw;
 
