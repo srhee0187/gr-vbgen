@@ -1,0 +1,31 @@
+<block>
+  <name>Rpm c</name>
+  <key>vbgen_rpm_c</key>
+  <category>[VBGEN]</category>
+  <import>import vbgen</import>
+  <make>vbgen.rpm_c($fWidth, $pWidth, $samp_rate, $nBins)</make>
+  <param>
+    <name>Fwidth</name>
+    <key>fWidth</key>
+    <type>real</type>
+  </param>
+  <param>
+    <name>Pwidth</name>
+    <key>pWidth</key>
+    <type>real</type>
+  </param>
+  <param>
+    <name>Samp_rate</name>
+    <key>samp_rate</key>
+    <type>real</type>
+  </param>
+  <param>
+    <name>Nbins</name>
+    <key>nBins</key>
+    <type>int</type>
+  </param>
+  <source>
+    <name>out</name>
+    <type>complex</type>
+  </source>
+</block>
