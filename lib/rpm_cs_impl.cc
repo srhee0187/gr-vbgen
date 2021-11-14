@@ -45,7 +45,7 @@ namespace gr {
       : gr::sync_block("rpm_cs",
               gr::io_signature::make(0, 0, 0),
               gr::io_signature::make(1, 1, sizeof(gr_complex))),
-			  d_rng(0, 0, nBins),
+			  o_rng(0, 0, nBins),
 			  f_phase(0),
 			  d_fw(fWidth),
 			  d_pw(pWidth),
@@ -86,7 +86,7 @@ namespace gr {
 	  float offc = i_n / 2.0f;
 	  for (int pti = 0; pti < nPulses; pti++) {
 		  // select random point and then scale RNG output into sample frequency
-		  pts = (d_rng.ran_int() - offc) * sens;
+		  pts = (o_rng.ran_int() - offc) * sens;
 		  // repeat sample spp times into a pulse, and perform frequency modulation simultaneously
 		  for (int j = 0; j < spp; j++) {
 			  // cumulative sum on slope index (sc) and mod w.r.t. sps

@@ -30,7 +30,7 @@ namespace gr {
     class rpm_f_impl : public rpm_f
     {
      private:
-      gr::random d_rng;
+      gr::random o_rng;
       float f_phase;
       double d_fw;
       double d_pw;

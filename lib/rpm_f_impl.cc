@@ -45,7 +45,7 @@ namespace gr {
       : gr::sync_block("rpm_f",
               gr::io_signature::make(0, 0, 0),
               gr::io_signature::make(1, 1, sizeof(float))),
-			  d_rng(0, 0, nBins),
+			  o_rng(0, 0, nBins),
 			  f_phase(0),
 			  d_fw(fWidth),
 			  d_pw(pWidth),
@@ -78,7 +78,7 @@ namespace gr {
 	  // for each pulse:
 	  for (int pti = 0; pti < npp; ++pti) {
 		  // select random points and then scale RNG output into sample of modulating waveform (in rads)
-		  pts = (float(d_rng.ran_int()) - float(i_n) / 2.0f) * float(d_fw) / float(i_n);
+		  pts = (float(o_rng.ran_int()) - float(i_n) / 2.0f) * float(d_fw) / float(i_n);
 		  // repeat sample spv times into a pulse
 		  for (int j = 0; j < spv; ++j) {
 			  memcpy(out, &pts, sizeof(float));
