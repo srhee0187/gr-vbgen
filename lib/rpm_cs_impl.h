@@ -31,14 +31,14 @@ namespace gr {
     {
      private:
       gr::random d_rng;
-      float d_phase;
+      float f_phase;
       double d_fw;
       double d_pw;
       double d_fs;
       int i_n;
 			double d_bw;
 			double d_sc;
-			long int i_sc;
+			long int ii_sc;
 
      public:
       rpm_cs_impl(double fWidth, double pWidth, double samp_rate, int nBins, double cov, double scWidth);

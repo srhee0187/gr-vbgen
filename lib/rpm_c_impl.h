@@ -31,7 +31,7 @@ namespace gr {
     {
      private:
       gr::random d_rng;
-      float d_phase;
+      float f_phase;
       double d_fw;
       double d_pw;
       double d_fs;

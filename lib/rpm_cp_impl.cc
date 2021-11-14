@@ -46,7 +46,7 @@ namespace gr {
               gr::io_signature::make(0, 0, 0),
               gr::io_signature::make(1, 1, sizeof(gr_complex))),
 			  d_rng(0, 0, nBins),
-			  d_phase(0),
+			  f_phase(0),
 			  d_fw(fWidth),
 			  d_pw(pWidth),
 			  d_fs(samp_rate),

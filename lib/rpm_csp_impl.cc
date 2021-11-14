@@ -46,15 +46,15 @@ namespace gr {
               gr::io_signature::make(0, 0, 0),
               gr::io_signature::make(1, 1, sizeof(gr_complex))),
 			  d_rng(0, 0, nBins),
-			  d_phase(0),
+			  f_phase(0),
 			  d_fw(fWidth),
 			  d_pw(pWidth),
 			  d_fs(samp_rate),
 			  i_n(nBins),
 			  d_bw(cov),
 			  d_sc(scWidth),
-			  i_sc(0),
-			  i_pw(0)
+			  ii_sc(0),
+			  ii_pw(0)
     {}
 
     /*
@@ -89,14 +89,14 @@ namespace gr {
 		  // repeat sample spp times into a pulse, and perform frequency modulation simultaneously
 		  for (int j = 0; j < spp; j++) {
 			  // cumulative sum on slope index (sc) and mod w.r.t. sps
-			  i_sc += 1;
-			  i_sc = i_sc % sps; // replace sub counter
+			  ii_sc += 1;
+			  ii_sc = ii_sc % sps; // replace sub counter
 			  // cumulative sum on phase (sc)
-			  spts += slp * (i_sc - hsps);
+			  spts += slp * (ii_sc - hsps);
 			  // cumulative sum on phase (rpm)
-			  d_phase += pts;
+			  f_phase += pts;
 			  // compute sin and cos of angle (fixed value)
-			  angle = gr::fxpt::float_to_fixed((d_phase + spts) * 3.14159f);
+			  angle = gr::fxpt::float_to_fixed((f_phase + spts) * 3.14159f);
 			  gr::fxpt::sincos(angle, &oq, & oi);
 			  // assign complex modulated value to "out" array
 			  *out = gr_complex(oi, oq);
@@ -104,7 +104,7 @@ namespace gr {
 			  out += 1;
 		  }
 		  // then mod phase sum to 2*PI [-PI, PI] to avoid (eventual) overruns
-		  d_phase = std::fmod(d_phase + 1.0f, 2.0f) - 1.0f;
+		  f_phase = std::fmod(f_phase + 1.0f, 2.0f) - 1.0f;
 		  spts = std::fmod(spts + 1.0f, 2.0f) - 1.0f;
 	  }
       // Tell runtime system how many output items we produced.

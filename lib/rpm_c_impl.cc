@@ -46,7 +46,7 @@ namespace gr {
               gr::io_signature::make(0, 0, 0),
               gr::io_signature::make(1, 1, sizeof(gr_complex))),
 			  d_rng(0, 0, nBins),
-			  d_phase(0),
+			  f_phase(0),
 			  d_fw(fWidth),
 			  d_pw(pWidth),
 			  d_fs(samp_rate),
@@ -82,9 +82,9 @@ namespace gr {
 		  // repeat sample spp times into a pulse, and perform frequency modulation simultaneously
 		  for (int j = 0; j < spp; j++) {
 			  // cumulative sum on phase,
-			  d_phase = d_phase + pts;
+			  f_phase = f_phase + pts;
 			  // compute sin and cos of angle (fixed value)
-			  angle = gr::fxpt::float_to_fixed(d_phase * 3.14159f);
+			  angle = gr::fxpt::float_to_fixed(f_phase * 3.14159f);
 			  gr::fxpt::sincos(angle, &oq, & oi);
 			  // assign complex modulated value to "out" array
 			  *out = gr_complex(oi, oq);
@@ -92,7 +92,7 @@ namespace gr {
 			  out += 1;
 		  }
 		  // then mod phase sum to 2*PI [-PI, PI] to prevent overruns
-		  d_phase = std::fmod(d_phase + 1.0f, 2.0f) - 1.0f;
+		  f_phase = std::fmod(f_phase + 1.0f, 2.0f) - 1.0f;
 	  }
       // Tell runtime system how many output items we produced.
       noutput_items = spp * nPulses;
