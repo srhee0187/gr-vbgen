@@ -35,7 +35,7 @@ namespace gr {
       double d_fw;
       double d_pw;
       double d_fs;
-      int d_n;
+      int i_n;
       int spp;
       int nPulses;
 
@@ -47,7 +47,7 @@ namespace gr {
       double get_fw() const override { return d_fw; }
       double get_pw() const override { return d_pw; }
       double get_fs() const override { return d_fs; }
-      double get_n() const override { return d_n; }
+      double get_n() const override { return i_n; }
       int get_spp() const override { return spp; }
       int get_nPulses() const override { return nPulses; }
 

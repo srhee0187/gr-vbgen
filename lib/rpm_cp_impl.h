@@ -35,7 +35,7 @@ namespace gr {
       double d_fw;
       double d_pw;
       double d_fs;
-      int d_n;
+      int i_n;
 
      public:
       rpm_cp_impl(double fWidth, double pWidth, double samp_rate, int nBins);

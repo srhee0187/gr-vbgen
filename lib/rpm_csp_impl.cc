@@ -50,10 +50,11 @@ namespace gr {
 			  d_fw(fWidth),
 			  d_pw(pWidth),
 			  d_fs(samp_rate),
-			  d_n(nBins),
+			  i_n(nBins),
 			  d_bw(cov),
 			  d_sc(scWidth),
-			  i_sc(0)
+			  i_sc(0),
+			  i_pw(0)
     {}
 
     /*
@@ -70,10 +71,10 @@ namespace gr {
     {
       // initial array pointers and working variables
 	  gr_complex *out = (gr_complex *) output_items[0];
-	  // loop counts
-	  const int spp = int(d_pw * d_fs);
-	  const int nPulses = int(noutput_items / spp);
-	  int32_t angle;
+	  // rpm constants
+	  const long int spp = int(d_pw * d_fs);
+	  const float sens = 2.0f * float(d_fw / d_fs) / i_n;
+	  const float offc = i_n / 2.0f;
 	  // subcarrier constants
 	  const long int sps = int(d_fs / d_sc);
 	  const long int hsps = int(sps / 2);
@@ -81,17 +82,15 @@ namespace gr {
 	  // working/intermediate variables
 	  float pts, oi, oq;
 	  float spts = 0;
-	  // for each pulse (centered on rpm pulses, not subcarrier sweeps):
-	  float sens = 2.0f * float(d_fw / d_fs) / d_n;
-	  float offc = d_n / 2.0f;
-	  for (int pti = 0; pti < nPulses; pti++) {
+	  int32_t angle;
+	  for (int pti = 0; pti < noutput_items; pti++) {
 		  // select random point and then scale RNG output into sample frequency
 		  pts = (d_rng.ran_int() - offc) * sens;
 		  // repeat sample spp times into a pulse, and perform frequency modulation simultaneously
 		  for (int j = 0; j < spp; j++) {
 			  // cumulative sum on slope index (sc) and mod w.r.t. sps
 			  i_sc += 1;
-			  i_sc = i_sc % sps; // replace mod with if/else chain with reversed slope sign (triangular subs)
+			  i_sc = i_sc % sps; // replace sub counter
 			  // cumulative sum on phase (sc)
 			  spts += slp * (i_sc - hsps);
 			  // cumulative sum on phase (rpm)
@@ -109,7 +108,6 @@ namespace gr {
 		  spts = std::fmod(spts + 1.0f, 2.0f) - 1.0f;
 	  }
       // Tell runtime system how many output items we produced.
-      noutput_items = spp * nPulses;
       return noutput_items;
     }
 

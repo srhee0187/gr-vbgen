@@ -50,7 +50,7 @@ namespace gr {
 			  d_fw(fWidth),
 			  d_pw(pWidth),
 			  d_fs(samp_rate),
-			  d_n(nBins)
+			  i_n(nBins)
     {}
 
     /*
@@ -78,7 +78,7 @@ namespace gr {
 	  // for each pulse:
 	  for (int pti = 0; pti < npp; ++pti) {
 		  // select random points and then scale RNG output into sample of modulating waveform (in rads)
-		  pts = (float(d_rng.ran_int()) - float(d_n) / 2.0f) * float(d_fw) / float(d_n);
+		  pts = (float(d_rng.ran_int()) - float(i_n) / 2.0f) * float(d_fw) / float(i_n);
 		  // repeat sample spv times into a pulse
 		  for (int j = 0; j < spv; ++j) {
 			  memcpy(out, &pts, sizeof(float));

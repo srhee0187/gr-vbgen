@@ -50,7 +50,7 @@ namespace gr {
 			  d_fw(fWidth),
 			  d_pw(pWidth),
 			  d_fs(samp_rate),
-			  d_n(nBins)
+			  i_n(nBins)
     {}
 
     /*
@@ -74,8 +74,8 @@ namespace gr {
 	  // working/intermediate variables
 	  float pts, oi, oq;
 	  // for each pulse:
-	  float sens = 2.0f * float(d_fw / d_fs) / d_n;
-	  float offc = d_n / 2.0f;
+	  float sens = 2.0f * float(d_fw / d_fs) / i_n;
+	  float offc = i_n / 2.0f;
 	  for (int pti = 0; pti < nPulses; pti++) {
 		  // select random point and then scale RNG output into sample frequency
 		  pts = (d_rng.ran_int() - offc) * sens;

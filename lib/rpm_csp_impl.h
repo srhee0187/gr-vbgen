@@ -35,10 +35,11 @@ namespace gr {
       double d_fw;
       double d_pw;
       double d_fs;
-      int d_n;
+      int i_n;
 			double d_bw;
 			double d_sc;
 			long int i_sc;
+      long int i_pw;
 
      public:
       rpm_csp_impl(double fWidth, double pWidth, double samp_rate, int nBins, double cov, double scWidth);

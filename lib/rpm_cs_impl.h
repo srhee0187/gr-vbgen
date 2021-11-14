@@ -35,7 +35,7 @@ namespace gr {
       double d_fw;
       double d_pw;
       double d_fs;
-      int d_n;
+      int i_n;
 			double d_bw;
 			double d_sc;
 			long int i_sc;
