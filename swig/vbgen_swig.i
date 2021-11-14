@@ -12,6 +12,7 @@
 #include "vbgen/rpm_c.h"
 #include "vbgen/rpm_cp.h"
 #include "vbgen/rpm_cs.h"
+#include "vbgen/rpm_csp.h"
 %}
 
 
@@ -23,3 +24,5 @@ GR_SWIG_BLOCK_MAGIC2(vbgen, rpm_c);
 GR_SWIG_BLOCK_MAGIC2(vbgen, rpm_cp);
 %include "vbgen/rpm_cs.h"
 GR_SWIG_BLOCK_MAGIC2(vbgen, rpm_cs);
+%include "vbgen/rpm_csp.h"
+GR_SWIG_BLOCK_MAGIC2(vbgen, rpm_csp);

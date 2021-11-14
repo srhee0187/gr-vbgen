@@ -22,5 +22,6 @@ install(FILES
     vbgen_rpm_f.xml
     vbgen_rpm_c.xml
     vbgen_rpm_cp.xml
-    vbgen_rpm_cs.xml DESTINATION share/gnuradio/grc/blocks
+    vbgen_rpm_cs.xml
+    vbgen_rpm_csp.xml DESTINATION share/gnuradio/grc/blocks
 )

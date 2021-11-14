@@ -26,5 +26,6 @@ install(FILES
     rpm_f.h
     rpm_c.h
     rpm_cp.h
-    rpm_cs.h DESTINATION include/vbgen
+    rpm_cs.h
+    rpm_csp.h DESTINATION include/vbgen
 )

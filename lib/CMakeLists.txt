@@ -31,6 +31,7 @@ list(APPEND vbgen_sources
     rpm_c_impl.cc
     rpm_cp_impl.cc
     rpm_cs_impl.cc
+    rpm_csp_impl.cc
 )
 
 set(vbgen_sources "${vbgen_sources}" PARENT_SCOPE)
